@@ -2,27 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_with_firebase_training/services/auth.dart';
 import 'package:flutter_with_firebase_training/shared/constants.dart';
 
-class SignIn extends StatefulWidget {
-
+class Register extends StatefulWidget {
   final Function toggleView;
-  SignIn({this.toggleView});
+  Register({this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
 
-    final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
+  final AuthService _auth = AuthService();
 
-  // text field state
-
+  //text field state
   String email = '';
   String password = '';
   String error = '';
 
-  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +29,11 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
-        title: Text("Sign in"),
+        title: Text("Sign up"),
         actions: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.person),
-            label: Text("Register"),
+            label: Text("Log In"),
             onPressed: (){
               widget.toggleView();
             },
@@ -68,15 +66,17 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               RaisedButton(
                 color: Colors.pink[400],
-                child: Text("Sign in",
+                child: Text("Register",
                 style: TextStyle(color: Colors.white)
                 ),
                 onPressed: () async {
                   if(_formKey.currentState.validate()){
-                    dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-                    if(result == null){
-                      setState(() => error = 'Could not sign in with those credentials');
-                    }
+                   dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                   if(result == null){
+                     setState(() => error = 'please enter valid data');
+                   }else{
+
+                   }
                   }
                 },
               ),
