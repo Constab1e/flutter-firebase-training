@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_with_firebase_training/services/auth.dart';
 import 'package:flutter_with_firebase_training/shared/constants.dart';
+import 'package:flutter_with_firebase_training/shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -16,6 +17,8 @@ class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
 
+  bool isLoading = false;
+
   //text field state
   String email = '';
   String password = '';
@@ -24,7 +27,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -71,9 +74,11 @@ class _RegisterState extends State<Register> {
                 ),
                 onPressed: () async {
                   if(_formKey.currentState.validate()){
+                   setState(() => isLoading = true);
                    dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                    if(result == null){
                      setState(() => error = 'please enter valid data');
+                     isLoading = false;
                    }else{
 
                    }
